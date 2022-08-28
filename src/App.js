@@ -4,6 +4,11 @@ import CounterClass from "./components/CounterClass";
 import Table from "./components/Table/Table";
 
 const App = () => {
+  const [posts, setPosts] = useState([
+    { id: 1, title: "JavaScript", stack: "MERN-Stack" },
+    { id: 2, title: "Java", stack: "Full-Stack" },
+    { id: 3, title: "Go", stack: "BackEnd" },
+  ]);
   let [toggleBtn, setToggleBtn] = useState(false);
   let [value, setValue] = useState("");
 
@@ -37,7 +42,7 @@ const App = () => {
           </div>
         </div>
       </div>
-      <Table/>
+      <Table posts={posts}/>
     </div>
   );
 };
