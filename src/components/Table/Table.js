@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import TableHead from "./TableHead";
 import TableItem from "./TableItem";
-
+import './Table.css'
 const Table = (props) => {
   
   return (
-    <div>
-      <div className="card m-5 p-2 shadow rounded-3 order border-primary border-2">
+    <div className="Table">
+      <div className="Table w-50 card m-auto p-2 shadow rounded-3 order border-primary border-2">
         <table className="table table-striped">
           <thead>
             <TableHead />

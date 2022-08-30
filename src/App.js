@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Counter from "./components/Counter";
 import CounterClass from "./components/CounterClass";
+import MyButton from "./components/MyButtons/MyButton";
+import MyInput from "./components/MyInput/MyInput";
 import Table from "./components/Table/Table";
 
 const App = () => {
@@ -11,10 +13,17 @@ const App = () => {
   ]);
   let [toggleBtn, setToggleBtn] = useState(false);
   let [value, setValue] = useState("");
-
+  const [title, setTitle] = useState('');
+  const [stack, setStack] = useState('');
+  const inputRef = useRef();
   const toggle = () => {
     setToggleBtn((toggleBtn = !toggleBtn));
   };
+  const addPost = (e) => {
+    e.preventDefault()
+    console.log(title)
+    console.log(stack)
+  }
   return (
     <div className="App">
       <h1>Hello react</h1>
@@ -42,7 +51,40 @@ const App = () => {
           </div>
         </div>
       </div>
-      <Table posts={posts}/>
+      <div className="w-50 card m-auto p-2 shadow rounded-3 order border-primary border-2">
+        <form>
+          <h4>Create job post</h4>
+          <div className="mb-3">
+            <MyInput
+              type="text"
+              className="form-control"
+              placeholder="Programming language"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <MyInput
+              type="text"
+              className="form-control"
+              placeholder="Your favourite stack"
+              value={stack}
+              onChange={e => setStack(e.target.value)}              
+            />
+            {/* <MyInput
+              type="text"
+              className="form-control"
+              placeholder="Your favourite stack"
+              ref={inputRef}
+              onChange={e => setStack(e.target.value)}              
+            /> */}
+          </div>
+          <MyButton className="btn btn-primary w-100" onClick={addPost}>Add Posts</MyButton>
+        </form>
+      </div>
+      <div className="my-3">
+        <Table posts={posts} />
+      </div>
     </div>
   );
 };
