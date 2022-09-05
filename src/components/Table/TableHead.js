@@ -4,8 +4,8 @@ const TableHead = (props) =>  {
     return (
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Programming</th>
-                <th scope="col">Satck</th>
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
                 <th scope="col">Actions</th>
               </tr>
     )

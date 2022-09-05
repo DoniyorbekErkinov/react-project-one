@@ -1,17 +1,15 @@
 import React from "react";
 import MyButton from "../MyButtons/MyButton";
 
-const TableItem = (props) => {
-  const showBody = (id) => {
-    console.log(id);
-  }
+const TableItem = ({post,number, removePost}) => {
+  
     return (
       <tr>
-        <th scope="row">{props.post.id}</th>
-        <td>{props.post.title}</td>
-        <td>{props.post.stack}</td>
+        <th scope="row">{number}</th>
+        <td>{post.title}</td>
+        <td>{post.body}</td>
         <td>
-          <MyButton onClick={event => showBody(props.post.id, event)} className="btn btn-danger">Delete</MyButton>
+          <MyButton onClick={() => removePost(post)} className="btn btn-danger">Delete</MyButton>
         </td>
       </tr>
     );

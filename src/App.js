@@ -1,29 +1,41 @@
-import React, { useState, useRef } from "react";
+import axios from "axios";
+import React, { useMemo, useState, useEffect } from "react";
 import Counter from "./components/Counter";
 import CounterClass from "./components/CounterClass";
-import MyButton from "./components/MyButtons/MyButton";
-import MyInput from "./components/MyInput/MyInput";
+import FilterAndSearch from "./components/FilterAndSearch";
+import MyModal from "./components/MyModal/MyModal";
+import PostForm from "./components/PostForm";
 import Table from "./components/Table/Table";
+import { usePost } from "./hooks/useSortPosts";
 
 const App = () => {
-  const [posts, setPosts] = useState([
-    { id: 1, title: "JavaScript", stack: "MERN-Stack" },
-    { id: 2, title: "Java", stack: "Full-Stack" },
-    { id: 3, title: "Go", stack: "BackEnd" },
-  ]);
+  const [posts, setPosts] = useState([]);
   let [toggleBtn, setToggleBtn] = useState(false);
   let [value, setValue] = useState("");
-  const [title, setTitle] = useState('');
-  const [stack, setStack] = useState('');
-  const inputRef = useRef();
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const sortAndSearchPost = usePost(posts, filter.sort, filter.query)
   const toggle = () => {
     setToggleBtn((toggleBtn = !toggleBtn));
   };
-  const addPost = (e) => {
-    e.preventDefault()
-    console.log(title)
-    console.log(stack)
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost]);
+    setModal(false)
+  };
+  async function fetchData() {
+    const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    console.log(res.data)
+    setPosts(res.data)
   }
+  const cancelCreatePost = () => {
+    setModal(false)
+  }
+  const removePost = (post) => {
+    setPosts(posts.filter((p) => p.id !== post.id));
+  };
+  const [modal, setModal] = useState(false);
+  useEffect(() => {
+    fetchData()
+  }, [])
   return (
     <div className="App">
       <h1>Hello react</h1>
@@ -51,39 +63,19 @@ const App = () => {
           </div>
         </div>
       </div>
-      <div className="w-50 card m-auto p-2 shadow rounded-3 order border-primary border-2">
-        <form>
-          <h4>Create job post</h4>
-          <div className="mb-3">
-            <MyInput
-              type="text"
-              className="form-control"
-              placeholder="Programming language"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <MyInput
-              type="text"
-              className="form-control"
-              placeholder="Your favourite stack"
-              value={stack}
-              onChange={e => setStack(e.target.value)}              
-            />
-            {/* <MyInput
-              type="text"
-              className="form-control"
-              placeholder="Your favourite stack"
-              ref={inputRef}
-              onChange={e => setStack(e.target.value)}              
-            /> */}
-          </div>
-          <MyButton className="btn btn-primary w-100" onClick={addPost}>Add Posts</MyButton>
-        </form>
-      </div>
-      <div className="my-3">
-        <Table posts={posts} />
+      <div className="card w-50 m-auto shadow rounded-3 order border-primary border-2 p-2">
+        <div className="d-flex justify-content-end">
+          <button onClick={() => setModal(true)} className="btn btn-primary">Add Posts</button>
+        </div>
+        <MyModal modal={modal} setModal={setModal}>
+          <PostForm cancelCreatePost={cancelCreatePost} createPost={createPost} />
+        </MyModal>
+        <FilterAndSearch filter={filter} setFilter={setFilter} />
+        {sortAndSearchPost.length ? (
+          <Table posts={sortAndSearchPost} removePost={removePost} />
+        ) : (
+          <h1 className="my-3">No posts yet</h1>
+        )}
       </div>
     </div>
   );
