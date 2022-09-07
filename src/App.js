@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useMemo, useState, useEffect } from "react";
 import Counter from "./components/Counter";
 import CounterClass from "./components/CounterClass";
@@ -6,33 +5,36 @@ import FilterAndSearch from "./components/FilterAndSearch";
 import MyModal from "./components/MyModal/MyModal";
 import PostForm from "./components/PostForm";
 import Table from "./components/Table/Table";
+import { useFetchData } from "./hooks/useFetching";
 import { usePost } from "./hooks/useSortPosts";
+import ApiService from "./Services/PostService";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
   let [toggleBtn, setToggleBtn] = useState(false);
-  let [value, setValue] = useState("");
-  const [filter, setFilter] = useState({ sort: "", query: "" });
-  const sortAndSearchPost = usePost(posts, filter.sort, filter.query)
   const toggle = () => {
     setToggleBtn((toggleBtn = !toggleBtn));
   };
+  let [value, setValue] = useState("");
+  const [filter, setFilter] = useState({ sort: "", query: "" });
+  const [modal, setModal] = useState(false);
+  
+  const sortAndSearchPost = usePost(posts, filter.sort, filter.query)
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
     setModal(false)
   };
-  async function fetchData() {
-    const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
-    console.log(res.data)
-    setPosts(res.data)
-  }
+  
   const cancelCreatePost = () => {
     setModal(false)
   }
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
-  const [modal, setModal] = useState(false);
+  async function fetchData() {
+    const posts = await ApiService.getAllPost()
+    setPosts(posts)
+  }
   useEffect(() => {
     fetchData()
   }, [])
