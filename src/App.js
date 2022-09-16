@@ -19,6 +19,9 @@ const App = () => {
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
   
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+
   const sortAndSearchPost = usePost(posts, filter.sort, filter.query)
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -32,8 +35,8 @@ const App = () => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
   async function fetchData() {
-    const posts = await ApiService.getAllPost()
-    setPosts(posts)
+    const response = await ApiService.getAllPost(limit, page)
+    setPosts(response.data)
   }
   useEffect(() => {
     fetchData()
