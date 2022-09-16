@@ -2,12 +2,13 @@ import React, { useMemo, useState, useEffect } from "react";
 import Counter from "./components/Counter";
 import CounterClass from "./components/CounterClass";
 import FilterAndSearch from "./components/FilterAndSearch";
+import MyButton from "./components/MyButtons/MyButton";
 import MyModal from "./components/MyModal/MyModal";
 import PostForm from "./components/PostForm";
 import Table from "./components/Table/Table";
-import { useFetchData } from "./hooks/useFetching";
 import { usePost } from "./hooks/useSortPosts";
 import ApiService from "./Services/PostService";
+import { getPageArray, getPageCount } from "./utils/pages";
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -18,29 +19,35 @@ const App = () => {
   let [value, setValue] = useState("");
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
-  
+  const [totalPages, setTotalPages] = useState(0);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-
-  const sortAndSearchPost = usePost(posts, filter.sort, filter.query)
+  const pageArray = getPageArray(totalPages);
+  const sortAndSearchPost = usePost(posts, filter.sort, filter.query);
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
-    setModal(false)
+    setModal(false);
   };
-  
+
   const cancelCreatePost = () => {
-    setModal(false)
-  }
+    setModal(false);
+  };
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
+
   async function fetchData() {
-    const response = await ApiService.getAllPost(limit, page)
-    setPosts(response.data)
+    const response = await ApiService.getAllPost(limit, page);
+    setPosts(response.data);
+    const totalCount = response.headers["x-total-count"];
+    setTotalPages(getPageCount(totalCount, limit));
+  }
+  const changePage = (page) => {
+    setPage(page)    
   }
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, [page]);
   return (
     <div className="App">
       <h1>Hello react</h1>
@@ -68,12 +75,17 @@ const App = () => {
           </div>
         </div>
       </div>
-      <div className="card w-50 m-auto shadow rounded-3 order border-primary border-2 p-2">
+      <div className="my-4 card w-50 m-auto shadow rounded-3 order border-primary border-2 p-2">
         <div className="d-flex justify-content-end">
-          <button onClick={() => setModal(true)} className="btn btn-primary">Add Posts</button>
+          <button onClick={() => setModal(true)} className="btn btn-primary">
+            Add Posts
+          </button>
         </div>
         <MyModal modal={modal} setModal={setModal}>
-          <PostForm cancelCreatePost={cancelCreatePost} createPost={createPost} />
+          <PostForm
+            cancelCreatePost={cancelCreatePost}
+            createPost={createPost}
+          />
         </MyModal>
         <FilterAndSearch filter={filter} setFilter={setFilter} />
         {sortAndSearchPost.length ? (
@@ -81,6 +93,15 @@ const App = () => {
         ) : (
           <h1 className="my-3">No posts yet</h1>
         )}
+        <div className="d-flex justify-content-center mt-4">
+          <ul className="pagination">
+          {pageArray.map((item) => (
+              <MyButton onClick={() => changePage(item)} className={page === item ? "btn btn-primary m-1" : "btn btn-outline-primary m-1"} key={item}>
+              {item}
+              </MyButton>
+          ))}                                   
+          </ul>
+        </div>
       </div>
     </div>
   );
