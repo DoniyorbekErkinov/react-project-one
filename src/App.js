@@ -1,23 +1,24 @@
-import MainPage from "./pages/MainPage";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
-import Game from "./pages/Game/Game";
-import Page404 from "./pages/error/page404";
+import { AuthContext } from "./context";
+
 import Navbar from "./pages/NavBar/Navbar";
+import RouterApp from "./Routes/RouterApp";
 export default function App() {
+  const [isAuth, setIsAuth] = useState(false)
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      setIsAuth(true)
+    }
+  })
   return (
+    <AuthContext.Provider value={{isAuth, setIsAuth}}>
     <Router>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Game />}></Route>
-        <Route path="posts" element={<MainPage />}></Route>
-        <Route path='404' element={<Page404/>} ></Route>
-          <Route path="*" element={<Navigate to="404" replace={true}/>} />
-      </Routes>
+      <RouterApp/>
     </Router>
+    </AuthContext.Provider>
   );
 }

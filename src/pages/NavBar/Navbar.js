@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {Link} from "react-router-dom"
 import MyButton from '../../components/MyButtons/MyButton';
+import { AuthContext } from '../../context';
 import './Navbar.css'
 function Navbar() {
+    const { isAuth, setIsAuth } = useContext(AuthContext)
+    function logout() {
+        localStorage.setItem('user', {})
+        setIsAuth(false)
+    }
     return (
         <>
             <div className='main'>
-                <Link to="/posts">
+                <Link to="/">
                     <button className='btn btn-primary'>
                         Logo
                     </button>
                 </Link>
                 <ul>
-                    <Link to="/posts">Posts</Link>
-                    <Link to="/">Games</Link>
+                    <Link to="/">Posts</Link>
+                    <Link to="/games">Games</Link>
                     <li>
-                        <MyButton className="btn btn-outline-primary">LogIn</MyButton>
+                        <MyButton className="btn btn-outline-primary" onClick={logout}>Logout</MyButton>
                     </li>
                 </ul>
-            </div>   
+            </div>
         </>
     );
 }
