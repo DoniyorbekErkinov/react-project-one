@@ -1,10 +1,11 @@
 import React from 'react';
-
+import './games.css'
+import ItemList from './ItemList';
 const Game = () => {
     return (
-        <h3>
-           Game 
-        </h3>
+        <div className='game'>
+           <ItemList/>
+        </div>
     );
 };
 
