@@ -19,7 +19,7 @@ function Navbar() {
                 </Link>
                 <ul>
                     <Link to="/">Posts</Link>
-                    <Link to="/games">Games</Link>
+                    <Link to="/videos">Videos</Link>
                     <li>
                         <MyButton className="btn btn-outline-primary" onClick={logout}>Logout</MyButton>
                     </li>

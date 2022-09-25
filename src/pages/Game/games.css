@@ -1,7 +1,0 @@
-.game{
-    display: flex;
-    background: linear-gradient(to right, #159957, #155799);
-    height: 90vh;
-    justify-content: center;
-    align-items: center;
-}
