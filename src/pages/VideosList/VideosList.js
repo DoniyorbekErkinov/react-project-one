@@ -14,8 +14,9 @@ import IconButton from "@mui/material/IconButton";
 import EditSharpIcon from "@mui/icons-material/EditSharp";
 import DeleteOutlineSharpIcon from "@mui/icons-material/DeleteOutlineSharp";
 import RemoveRedEyeSharpIcon from "@mui/icons-material/RemoveRedEyeSharp";
+import MyModal from "../../components/MyModal/MyModal"
 import apiService from "../../Services/ApiService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const b = lightBlue[50];
 const g = blueGrey[100];
 const useStyle = makeStyles({
@@ -63,12 +64,8 @@ function ItemList() {
   }
   const classes = useStyle();
   const [videos, setUserList] = useState([]);
-  const updateUser = useCallback(
-    (e) => {
-      console.log(e);
-    },
-    [videos]
-  );
+  const [modal, setModal] = useState(false);
+  const [src, setSrc] = useState('');
   const deleteUser = useCallback(
     (e) => {
       apiService.delete(e.id).then(res => {
@@ -80,10 +77,8 @@ function ItemList() {
   );
   const viewVideo = useCallback(
     (e) => {
-      // apiService.delete(e.id).then(res => {
-      //   console.log(res)
-      //   getList()
-      // })
+      setSrc(e.src)
+      setModal(true);
     },
     [videos]
   );
@@ -137,16 +132,16 @@ function ItemList() {
                       Link
                     </a>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <Stack
-                      sx={{ marginLeft: 5 }}
+                      style={{display: 'flex', justifyContent: 'center'}}
                       direction="row"
                       align="right"
-                      spacing={2}>
+                      spacing={1}>
                       <IconButton
                         variant="outlined"
                         color="primary"
-                        onClick={() => updateUser(video)}>
+                        component={Link} to={`/edit-videos/${video.id}`}>
                         <EditSharpIcon />
                       </IconButton>
                       <IconButton
@@ -169,10 +164,14 @@ function ItemList() {
           </Table>
         </TableContainer>
       </Box>
-      {/* <iframe
-        width="420"
+      <MyModal modal={modal} setModal={setModal}>
+        <Box>
+            {modal ? <iframe
+            width="420"
         height="315"
-        src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe> */}
+        src={src}></iframe> : ''}
+        </Box>
+      </MyModal>
     </div>
   );
 }

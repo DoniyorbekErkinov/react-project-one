@@ -15,6 +15,9 @@ const userService = {
     },
     delete(id) {
         return axios.delete(`${url}/${main}/${id}`)
+    },
+    getById(id) {
+        return axios.get(`${url}/${main}/${id}`)
     }
 }
 export default userService;

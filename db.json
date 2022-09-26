@@ -1,24 +1,22 @@
 {
   "videos": [
     {
-      "id": 4,
-      "name": "Demon Slayer (Tengen Uzui)",
-      "link": "https://www.youtube.com/watch?v=Bv5d8s26XU4&t=423s"
-    },
-    {
-      "id": 6,
-      "name": "Deman Slayer: Kimetsu noyobi",
-      "link": "https://www.youtube.com/watch?v=VQGCKyvzIM4"
-    },
-    {
       "id": 7,
       "name": "Best of Lightning McQueen",
-      "link": "https://www.youtube.com/watch?v=fdGWRq1dVBA"
+      "link": "https://www.youtube.com/watch?v=fdGWRq1dVBA",
+      "src": "https://www.youtube.com/embed/fdGWRq1dVBA?autoplay=1&origin=http://example.com&#action=share"
     },
     {
       "id": 5,
+      "name": "React Js",
       "link": "https://www.youtube.com/watch?v=bMknfKXIFA8",
-      "name": "React Js"
+      "src": "https://www.youtube.com/embed/bMknfKXIFA8?autoplay=1&origin=http://example.com&#action=share"
+    },
+    {
+      "id": 8,
+      "name": "Tanjiro All Fights",
+      "link": "https://www.youtube.com/watch?v=YLk7Y5lllMk",
+      "src": "https://www.youtube.com/embed/YLk7Y5lllMk?autoplay=0&origin=http://example.com&#action=share"
     }
   ]
 }

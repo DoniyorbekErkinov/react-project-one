@@ -5,6 +5,7 @@ import Login from "../pages/Login/Login"
 export const privateRoutes = [
     {path: "/videos", element: <Vides/>, exact: true},
     {path: "/add-videos", element: <AddVideos/>, exact: true},
+    {path: "/edit-videos/:id", element: <AddVideos/>, exact: true},
     {path: "/", element: <MainPage/>, exact: true}
 ]
 export const publicRoutes = [
