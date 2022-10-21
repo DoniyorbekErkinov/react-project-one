@@ -1,2 +1,3 @@
 # Getting Started with Create React App
-<!-- json-server --watch db.json -->
+To get data and with it run this command
+json-server --watch db.json
