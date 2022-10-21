@@ -40,11 +40,11 @@ function Login() {
               <div className="col-lg-12 login-form">
                 <form onSubmit={login}>
                   <div className="form-group">
-                    <label className="form-control-label">USERNAME</label>
+                    <label className="form-control-label">USERNAME (panda)</label>
                     <MyInput required onChange={(e) => setLoginForm({ ...loginForm, userName: e.target.value })} value={loginForm.userName} type="text" className="form-control" />
                   </div>
                   <div className="form-group">
-                    <label className="form-control-label">PASSWORD</label>
+                    <label className="form-control-label">PASSWORD (panda)</label>
                     <MyInput required onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })} value={loginForm.password} type="password" className="form-control" />
                   </div>
 
